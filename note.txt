@@ -1,0 +1,20 @@
+funzionalità:
+
+2 rami, il vr e il 2d
+
+Ramo principale si crea una webapp con material design o con bulmacss, 
+e si entra in una pagina con una griglia di libri(con copertina), dove poi si aprono e si leggono tipo su kavita.
+
+
+
+Ramo secondario(vr) :
+Si entra in una bibblioteca,  con al centro un tavolo che fa da leggio e una lampada(con stato binario)
+appena si entra si trovano i scaffali con i libri, ogni libro ha una copertina, con il controller o la mano si tocca, 
+il libro esce dallo scaffale(di 10cm) e permette di essere preso con le mani o il controller.
+
+Con la mano sinistra aperta si tiene il libro, se si chiude e fa mostrare la prima pagina(copertia ) da un lato e 
+l'ultima pagina(retro).
+
+
+Quando si tiene il libro lo si può lanciare dentro gli scaffali e verrà automaticamente rimesso apposto,
+Se il libro cade ricompare sul tavolo.
