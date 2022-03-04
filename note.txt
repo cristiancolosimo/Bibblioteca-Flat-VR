@@ -18,3 +18,32 @@ l'ultima pagina(retro).
 
 Quando si tiene il libro lo si può lanciare dentro gli scaffali e verrà automaticamente rimesso apposto,
 Se il libro cade ricompare sul tavolo.
+
+
+
+generazione stanze rogue like basata su un generatore che genera un file json del mondo, che descrive tutto, le stanze, gli scaffali, accessori, libri ecc 
+che poi devo fare un parser in react che lo trasforma in componenti del progetto
+
+
+multiplayer, basato su un server realtime che gestisce i movimenti di tutti gli oggetti duplicati(libri) e gli utenti:
+
+
+--------------
+i libri se cadono a terra, se non vengono raccolti entro 5 secondi scompaino con un effetto stile SAO aincrad
+
+----------
+progetto secondario
+
+i libri della bibblioteca sono nft, che si comprano su un marketplace 2D, tramite rete ropsten(sono povero)
+e vengono aggiunti in automatico alla propria libreria.
+
+
+--------
+altro progetto con blockchain
+
+creare una blockchain privata che registra i diversi movimenti tra i diversi utenti: 
+se un utente prende un libro, il gesto di presa del libro viene registrato, e quando si restituisce si segna sempre,
+ma non credo che lo farà essendo che  voglio che i libri siano infiniti e quando uno lo prende, prende in realtà una copia,
+di un numero infinito
+----------------
+
