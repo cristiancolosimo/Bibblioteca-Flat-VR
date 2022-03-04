@@ -1,11 +1,13 @@
 import './App.css'
 
-const VR = false;
-
+const VR_function = false;
+import VR from './vr/VR'
 
 
 function App() {
-
+return (
+  <VR></VR>
+)
  
 }
 
