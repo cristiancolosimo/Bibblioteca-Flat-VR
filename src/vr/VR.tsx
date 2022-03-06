@@ -21,7 +21,6 @@ export default function VR(){
                 <Room1></Room1>
             </VRCanvas >
           </Suspense>
-    
         </div>
       )
 }

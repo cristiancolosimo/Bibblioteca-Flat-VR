@@ -1,0 +1,72 @@
+{
+    "rooms": [{
+        "id": "fb8c198e-6c99-4027-92ca-f0553b93e60d",
+        "template": "Room1",
+        "description": "Stanza 1",
+        "bookcategory": "uncategorized", //  o mettere l'id della categoria di libri, così da scaricare i libri con l'id del bookcategort
+        "segret": false,
+        "portal": {
+            "nord": "", //roomid to tp
+            "est": "",
+            "ovest": "",
+            "sud": null
+        },
+        "accessory": [{
+            "id":"e1d875ae-4fdb-4476-834f-b882aa69a0ea",
+            "template":"lamp_1",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": null,
+            "rotation": null
+        }, {
+            "id":"f361bd02-aa34-4af9-9ea9-7ac495e4c0e7",
+            "template":"table_1",
+            "position": {
+                "x": 20,
+                "y": 20,
+                "z": 20
+            },
+            "scale": null,
+            "rotation": null
+        }]
+
+    },
+    {
+        "id": "c9c40dc6-13af-450b-a87b-4ae4e43083a6",
+        "template": "Room2",
+        "description": "Stanza 2",
+        "bookcategory": "manga", //  o mettere l'id della categoria di libri, così da scaricare i libri con l'id del bookcategort
+        "segret": false,
+        "portal": {
+            "nord": "", //roomid to tp
+            "est": "",
+            "ovest": "",
+            "sud": null
+        },
+        "accessory": [{
+            "id":"e8a39143-9020-4774-b181-805c80c2cfe5",
+            "template":"lamp_1",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "scale": null,
+            "rotation": null
+        }, {
+            "id":"aa7b44bf-ec22-45d1-b588-c9e3f05f8db6",
+            "template":"table_1",
+            "position": {
+                "x": 20,
+                "y": 20,
+                "z": 20
+            },
+            "scale": null,
+            "rotation": null
+        }]
+
+    }]
+}
