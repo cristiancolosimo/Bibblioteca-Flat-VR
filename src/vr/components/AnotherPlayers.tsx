@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { socket_connection } from "../../api/communication";
 import Box from "./Box";
+import {useState as useHookState} from '@hookstate/core'
+import { GlobalUserdata } from "../../api/globals";
 
 interface SpatialData {
     x: number,
@@ -20,6 +22,8 @@ interface Player {
 }
 
 export default function AnotherPlayers(props: any) {
+    const Userdata = useHookState(GlobalUserdata);
+
     const [playersLocation, setPlayersLocation] = useState<Array<Player>>([]);
     useEffect(() => {
         socket_connection.on("location_players", data => {
@@ -27,10 +31,11 @@ export default function AnotherPlayers(props: any) {
 
         });
     }, [])
-
+    let UserLoggedID = Userdata.get()
     return (
         <>
             {playersLocation.map(player => {
+                if(player.id == UserLoggedID) return null;
                 return <AnotherPlayer {...player} key={player.id} />
             })}</>) //playersLocation.;
 }
@@ -42,6 +47,9 @@ function AnotherPlayer(props: any) {
     console.log(props)
     return (
     <group>
+<mesh position={[props.head.position.x, props.head.position.y, props.head.position.z]} rotation={[props.head.rotation.x,props.head.rotation.y,props.head.rotation.z]}>
+        <Box color={props.color}/>
+    </mesh>
 
 <mesh position={[props.leftController.position.x, props.leftController.position.y, props.leftController.position.z]} rotation={[props.leftController.rotation.x,props.leftController.rotation.y,props.leftController.rotation.z]}>
         <Box color={props.color}/>

@@ -8,6 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@hookstate/core": "^3.0.13",
+    "@mui/material": "^5.5.0",
     "@react-three/cannon": "^4.9.0",
     "@react-three/drei": "^8.11.1",
     "@react-three/fiber": "^7.0.26",
