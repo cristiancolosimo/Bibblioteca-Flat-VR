@@ -31,7 +31,8 @@ export default function AnotherPlayers(props: any) {
 
         });
     }, [])
-    let UserLoggedID = Userdata.get()
+    let UserLoggedID = Userdata.get();
+    return null;
     return (
         <>
             {playersLocation.map(player => {
@@ -44,7 +45,7 @@ export default function AnotherPlayers(props: any) {
   {"id":"ef32b89d-c8d3-4193-bd94-da47e6fefbf2","head":{"type":"headset","position":{"x":-6.7,"y":1,"z":8},"rotation":{"x":0,"y":1.5707963267948966,"z":0}},"leftController":{"type":"controller","position":{"x":2.7015278339385986,"y":1.4800000190734863,"z":-1.1302709579467773},"rotation":{"x":0.6654549523360951,"y":0,"z":0}},"rightController":{"type":"controller","position":{"x":-2.7086071968078613,"y":1.4800000190734863,"z":-0.37107792496681213},"rotation":{"x":0.6654549523360951,"y":0,"z":0}}}
  */
 function AnotherPlayer(props: any) {
-    console.log(props)
+    //console.log(props)
     return (
     <group>
 <mesh position={[props.head.position.x, props.head.position.y, props.head.position.z]} rotation={[props.head.rotation.x,props.head.rotation.y,props.head.rotation.z]}>

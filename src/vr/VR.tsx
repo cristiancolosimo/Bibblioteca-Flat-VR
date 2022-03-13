@@ -5,7 +5,7 @@ import Player from './components/Player';
 import BackgroundWorld from './components/Background';
 import Room1 from './rooms/Room1';
 import AnotherPlayers from "./components/AnotherPlayers";
-
+//import Room1 from '../../assets/model/room1/Room1';
 
 
 export default function VR() {
@@ -17,7 +17,7 @@ export default function VR() {
     <div style={{ height: "1000px", width: "100%", position: "relative", background: "#333" }}>
       <Suspense fallback={<span>Caricamento assets...</span>} >
         <VRCanvas >
-          <spotLight position={[10, 4, 10]} angle={0.3} />
+          <spotLight position={[10, 4, 10]} />
           <Player />
           <AnotherPlayers/>
           <BackgroundWorld />
