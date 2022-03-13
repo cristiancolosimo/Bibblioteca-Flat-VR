@@ -1,6 +1,7 @@
 import { Physics } from "@react-three/cannon";
 import { useEffect, useState } from "react";
 import Bookself from "../../../assets/model/libreria/Libreria";
+import { socket_connection } from "../../api/communication";
 import Book from "../components/Book";
 import Floor from "../components/Floor";
 import Wall from "../components/Wall";
@@ -11,16 +12,24 @@ interface book {
   cartella: string
 }
 export default function Room1() {
-  let [books, setBooks] = useState<Array<book>>([]);
+
+
+  let [books, setBooks] = useState<Array<any>>([]);
   useEffect(() => {
-    async function download_book_list() {
-      let books_raw = await fetch("/libri/libri.json");
-      let book_raw_json: Array<book> = await books_raw.json();
-      setBooks([...book_raw_json, ...book_raw_json, ...book_raw_json, ...book_raw_json]);
-      console.log("libri arrivati")
-    };
-    download_book_list();
-  }, []);
+    socket_connection.on("location_objects", data => {
+        setBooks(Object.values(data));
+
+    });
+}, []);
+  // useEffect(() => {
+  //   async function download_book_list() {
+  //     let books_raw = await fetch("/libri/libri.json");
+  //     let book_raw_json: Array<book> = await books_raw.json();
+  //     setBooks([...book_raw_json, ...book_raw_json, ...book_raw_json, ...book_raw_json]);
+  //     console.log("libri arrivati")
+  //   };
+  //   download_book_list();
+  // }, []);
 
 
   return (
@@ -42,7 +51,7 @@ export default function Room1() {
               if (k > 11) l -= 12;
 
               return (
-                <Book key={k} position={[0, k > 11 ? -0.9 : 0, l * (-0.14)]} copertina={"/libri/" + e.cartella + "/0.jpg"} retro={"/libri/" + e.cartella + "/" + (e.pages - 1) + ".jpg"} />
+                <Book key={e.id} bookdata={e}  copertina={"/libri/" + e.base_location + "/0.jpg"} retro={"/libri/" + e.base_location + "/" + (e.number_pages - 1) + ".jpg"} />
               )
             })
           }
