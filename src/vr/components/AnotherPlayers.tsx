@@ -37,7 +37,7 @@ export default function AnotherPlayers(props: any) {
     return (
         <group>
             {playersLocation.map(player => {
-                if (player.id == UserLoggedID) return null;
+                //if (player.id == UserLoggedID ) return null;
                 return <AnotherPlayer {...player} key={player.id} />
             })}
         </group>
@@ -55,6 +55,7 @@ export default function AnotherPlayers(props: any) {
 //const leftController_rotation = new THREE.Euler(props.leftController.rotation.x, props.leftController.rotation.y, props.leftController.rotation.z);
 
 function AnotherPlayer(props: any) {
+    
     let head_position;
     {
         let { x, y, z } = props.head.position;

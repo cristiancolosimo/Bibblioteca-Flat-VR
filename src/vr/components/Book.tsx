@@ -2,6 +2,7 @@ import { Interactive, useXREvent, useXRFrame } from "@react-three/xr";
 import { useRef, useState } from "react";
 import Libro from "../../../assets/model/libro/Libro";
 import { socket_connection } from "../../api/communication";
+import { decostructVector } from "../utils/vector";
 
 export default function Book(props:any){   
     let bigRef : any= useRef();
@@ -24,16 +25,8 @@ export default function Book(props:any){
                 spatialData: {
                     type:"object",
                     grabbed:true,
-                    rotation: {
-                        x:ref.current.rotation.x,
-                        y:ref.current.rotation.y,
-                        z:ref.current.rotation.y,
-                    },
-                    position: {
-                        x:ref.current.position.x,
-                        y:ref.current.position.y,
-                        z:ref.current.position.z,
-                    }
+                    rotation: decostructVector(ref.current.rotation),
+                    position: decostructVector(ref.current.position)
                 }
             }
             console.log(dataToSend);
@@ -52,22 +45,14 @@ export default function Book(props:any){
             spatialData: {
                 type:"object",
                 grabbed:false,
-
-                rotation: {
-                    x:ref.current.rotation.x,
-                    y:ref.current.rotation.y,
-                    z:ref.current.rotation.y,
-                },
-                position: {
-                    x:ref.current.position.x,
-                    y:ref.current.position.y,
-                    z:ref.current.position.z,
-                }
+                rotation: decostructVector(ref.current.rotation),
+                position: decostructVector(ref.current.position)
             }
         }
         console.log(dataToSend);
         socket_connection.emit("location_object",dataToSend);
     });
+    
     return (
         <mesh ref={bigRef}>
         <mesh ref={ref} position={[props.bookdata.spatialData.position.x,props.bookdata.spatialData.position.y,props.bookdata.spatialData.position.z]} rotation={[props.bookdata.spatialData.rotation.x,props.bookdata.spatialData.rotation.y,props.bookdata.spatialData.rotation.z]}> 

@@ -7,11 +7,10 @@ import { socket_connection } from "../../api/communication";
 import {useState as useHookState} from '@hookstate/core'
 import { GlobalUserdata } from "../../api/globals";
 import * as THREE from "three";
+import { decostructVector } from "../utils/vector";
 
 let clock:any = new THREE.Clock();//
-function decostructVector(_vector:THREE.Vector3 | THREE.Euler){
-    return {x:_vector.x, y:_vector.y, z:_vector.z}
- }
+
  function playerPositionMove(_axis: number, _index:number, _playerOBJ:any, _speed:number, _clock:THREE.Clock) {
     if(_axis < 0.5 || _axis > -0.5){
         switch(_index){
