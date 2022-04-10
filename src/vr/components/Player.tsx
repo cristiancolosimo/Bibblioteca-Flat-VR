@@ -6,10 +6,21 @@ import { socket_connection } from "../../api/communication";
 
 import {useState as useHookState} from '@hookstate/core'
 import { GlobalUserdata } from "../../api/globals";
-import Box from "./Box";
 import * as THREE from "three";
 
 let clock:any = new THREE.Clock();//
+function decostructVector(_vector:THREE.Vector3 | THREE.Euler){
+    return {x:_vector.x, y:_vector.y, z:_vector.z}
+ }
+ function playerPositionMove(_axis: number, _index:number, _playerOBJ:any, _speed:number, _clock:THREE.Clock) {
+    if(_axis < 0.5 || _axis > -0.5){
+        switch(_index){
+            case 3: _playerOBJ.position.x +=_axis*_speed*_clock.getDelta(); break;
+            case 2: _playerOBJ.position.z +=_axis*_speed*_clock.getDelta(); break;
+            default: break;
+        }
+    }
+ }
 
 export default function Player() {
     const speed = 100;
@@ -18,13 +29,10 @@ export default function Player() {
     const { controllers, player, isPresenting,isHandTracking } = useXR()
     const rightController = useController('right');
     const leftController = useController('left');
-    //const boxbox = useRef();
+
     const playerRef = useRef();
     const [playerData, setPlayerData] = useState<any>(null);
     
-    const [squeezestartLeft, setSqueezeStartLeft] = useState<boolean>(false);
-    const [squeezestartRight, setSqueezeStartRight] = useState<boolean>(false);
-    const [moving, setMoving] = useState<boolean>(false);
     
     useEffect(() => {
         socket_connection.on("login", data => {
@@ -33,69 +41,16 @@ export default function Player() {
             console.log(data);
             console.log("connessione fatta")
         });
-        player.scale.x = 1.5;
-        player.scale.y = 1.5;
-        player.scale.z = 1.5;
+        player.scale.set(1.5,1.5,1.5) 
         
     }, [])
 
-
-    useXREvent('squeezestart', (e) => setSqueezeStartLeft(true), { handedness: "left" })
-    useXREvent('squeezeend', (e) => setSqueezeStartLeft(false), { handedness: "left" })
-    useXREvent('squeezestart', (e) => setSqueezeStartRight(true), { handedness: "right" })
-    useXREvent('squeezeend', (e) => setSqueezeStartRight(false), { handedness: "right" })
     
 
-    useXREvent("selectstart",()=> {
-        console.log(rightController?.inputSource.gamepad);
-        console.log(rightController?.inputSource);
-        console.log(rightController?.grip);
-        console.log(rightController?.controller);
-        //rightController?.inputSource.
-    }, {handedness:"right"})
-    /* const socket = socketIOClient(ENDPOINT);
-     socket.on("login", data => {
-       console.log(data);
-     });*/
-
-
-
-
-
+     
     useXRFrame((time, xrFrame) => {
-        rightController?.inputSource.gamepad.axes.forEach((axis, index) => {
-            //console.log(axis,index);
-            //console.log(clock.getDelta())
-            if(index == 3){
-                if(axis < 0.5 || axis > -0.5){
-                    player.position.x +=axis*speed*clock.getDelta();
-                }
-                /*if(axis > 0.5){
-                    player.position.x += speed*clock.getDelta();
-                }else if(axis < -0.5){
-                    player.position.x -= speed*clock.getDelta();
+        rightController?.inputSource.gamepad.axes.forEach((axis, index) => playerPositionMove(axis, index, player, speed,clock));
 
-                }*/
-            }
-            if(index == 2){
-                if(axis < 0.5 || axis > -0.5){
-                    player.position.z +=axis*speed*clock.getDelta();
-                }
-                /*
-                if(axis > 0.5){
-                    //player.position.z += speed*clock.getDelta();
-                }else if(axis < -0.5){
-                    //player.position.z -= speed*clock.getDelta();
-                }*/
-            }
-
-        })
-        //console.log(player);
-        if(squeezestartLeft && squeezestartRight){
-    
-        }else{
-
-        }
         // do something on each frame of an active XR session
         if (leftController && rightController && playerData !== null) {
 
@@ -104,42 +59,18 @@ export default function Player() {
                 ...playerData,
                 head: {
                     type: "headset",
-                    position: {
-                        x: player.position.x,
-                        y: player.position.y,
-                        z: player.position.z
-                    },
-                    rotation: {
-                        x: player.rotation.x,
-                        y: player.rotation.y,
-                        z: player.rotation.z
-                    }
+                    position: decostructVector(player.position),
+                    rotation: decostructVector(player.rotation)
                 },
                 leftController: {
                     type: "controller",
-                    position: {
-                        x: leftController.controller.position.x,
-                        y: leftController.controller.position.y,
-                        z: leftController.controller.position.z,
-                    },
-                    rotation: {
-                        x: leftController.controller.rotation.x,
-                        y: leftController.controller.rotation.y,
-                        z: leftController.controller.rotation.z,
-                    }
+                    position: decostructVector(leftController.controller.position),
+                    rotation: decostructVector(leftController.controller.rotation)
                 },
                 rightController: {
                     type: "controller",
-                    position: {
-                        x: rightController.controller.position.x,
-                        y: rightController.controller.position.y,
-                        z: rightController.controller.position.z,
-                    },
-                    rotation: {
-                        x: rightController.controller.rotation.x,
-                        y: rightController.controller.rotation.y,
-                        z: rightController.controller.rotation.z,
-                    }
+                    position: decostructVector(rightController.controller.position),
+                    rotation: decostructVector(rightController.controller.rotation)
                 }
             };
 
@@ -158,7 +89,7 @@ export default function Player() {
         <>
         <group ref={playerRef}>
             <OrbitControls></OrbitControls>
-            <Hands />
+            {/*<Hands />*/} 
             
             <DefaultXRControllers />
         </group>
