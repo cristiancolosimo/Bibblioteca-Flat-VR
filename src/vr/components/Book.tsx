@@ -4,8 +4,8 @@ import Libro from "../../../assets/model/libro/Libro";
 import { socket_connection } from "../../api/communication";
 
 export default function Book(props:any){   
-    let bigRef = useRef();
-    let ref = useRef();
+    let bigRef : any= useRef();
+    let ref : any= useRef();
     let [bookHover, setBookHover] = useState<boolean>(false);
     let [grabbed, setGrabbed] = useState<boolean>(false);
     //let [controllerHover, setControllerHover] = useState<any>(null);
@@ -17,6 +17,7 @@ export default function Book(props:any){
         //setControllerHover(true);
     })
     useXRFrame((time,xrframe)=>{
+        
         if(grabbed){
             const dataToSend = {
                 ...props.bookdata,
@@ -66,7 +67,7 @@ export default function Book(props:any){
         }
         console.log(dataToSend);
         socket_connection.emit("location_object",dataToSend);
-    })
+    });
     return (
         <mesh ref={bigRef}>
         <mesh ref={ref} position={[props.bookdata.spatialData.position.x,props.bookdata.spatialData.position.y,props.bookdata.spatialData.position.z]} rotation={[props.bookdata.spatialData.rotation.x,props.bookdata.spatialData.rotation.y,props.bookdata.spatialData.rotation.z]}> 

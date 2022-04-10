@@ -1,33 +1,42 @@
 import { OrbitControls } from "@react-three/drei";
 import { useStore } from "@react-three/fiber";
 import { Hands, DefaultXRControllers, useXR, useController, useXREvent, useXRFrame } from "@react-three/xr";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { socket_connection } from "../../api/communication";
 
 import {useState as useHookState} from '@hookstate/core'
 import { GlobalUserdata } from "../../api/globals";
+import Box from "./Box";
+import * as THREE from "three";
 
+let clock:any = new THREE.Clock();//
 
 export default function Player() {
+    const speed = 100;
+
     const Userdata = useHookState(GlobalUserdata);
     const { controllers, player, isPresenting,isHandTracking } = useXR()
     const rightController = useController('right');
     const leftController = useController('left');
-
+    //const boxbox = useRef();
+    const playerRef = useRef();
     const [playerData, setPlayerData] = useState<any>(null);
-
+    
     const [squeezestartLeft, setSqueezeStartLeft] = useState<boolean>(false);
     const [squeezestartRight, setSqueezeStartRight] = useState<boolean>(false);
     const [moving, setMoving] = useState<boolean>(false);
+    
     useEffect(() => {
-
         socket_connection.on("login", data => {
             setPlayerData(data);
             Userdata.set(p=> data.id);
             console.log(data);
             console.log("connessione fatta")
         });
-
+        player.scale.x = 1.5;
+        player.scale.y = 1.5;
+        player.scale.z = 1.5;
+        
     }, [])
 
 
@@ -35,7 +44,15 @@ export default function Player() {
     useXREvent('squeezeend', (e) => setSqueezeStartLeft(false), { handedness: "left" })
     useXREvent('squeezestart', (e) => setSqueezeStartRight(true), { handedness: "right" })
     useXREvent('squeezeend', (e) => setSqueezeStartRight(false), { handedness: "right" })
+    
 
+    useXREvent("selectstart",()=> {
+        console.log(rightController?.inputSource.gamepad);
+        console.log(rightController?.inputSource);
+        console.log(rightController?.grip);
+        console.log(rightController?.controller);
+        //rightController?.inputSource.
+    }, {handedness:"right"})
     /* const socket = socketIOClient(ENDPOINT);
      socket.on("login", data => {
        console.log(data);
@@ -46,9 +63,36 @@ export default function Player() {
 
 
     useXRFrame((time, xrFrame) => {
+        rightController?.inputSource.gamepad.axes.forEach((axis, index) => {
+            //console.log(axis,index);
+            //console.log(clock.getDelta())
+            if(index == 3){
+                if(axis < 0.5 || axis > -0.5){
+                    player.position.x +=axis*speed*clock.getDelta();
+                }
+                /*if(axis > 0.5){
+                    player.position.x += speed*clock.getDelta();
+                }else if(axis < -0.5){
+                    player.position.x -= speed*clock.getDelta();
+
+                }*/
+            }
+            if(index == 2){
+                if(axis < 0.5 || axis > -0.5){
+                    player.position.z +=axis*speed*clock.getDelta();
+                }
+                /*
+                if(axis > 0.5){
+                    //player.position.z += speed*clock.getDelta();
+                }else if(axis < -0.5){
+                    //player.position.z -= speed*clock.getDelta();
+                }*/
+            }
+
+        })
         //console.log(player);
         if(squeezestartLeft && squeezestartRight){
-
+    
         }else{
 
         }
@@ -110,40 +154,14 @@ export default function Player() {
         }
         if (playerData == null) socket_connection.emit("request_login", "dammi i dati");
     });
-    //controllers[0]?.inputSource
-    //const leftController = useController('left')
-    //const rightController = useController('right')
-
-    //useXREvent('select', (e) => alert(controllers[0].inputSource.gamepad))
-    useEffect(() => {
-        /*  player.position.y = +1
-          player.position.x = -6.7;
-          player.position.z = 8;
-          player.rotation.y =Math.PI /2;
-        
-      
-              controllers[0].controller.position.y = 1
-              controllers[0].controller.position.x = -6.7;
-              controllers[0].controller.position.z = 8;
-              controllers[0].controller.rotation.y =Math.PI /2;
-      
-              controllers[1].controller.position.y = 1
-              controllers[1].controller.position.x = -6.7;
-              controllers[1].controller.position.z = 8;
-              controllers[1].controller.rotation.y =Math.PI /2;
-      
-              */
-        //controllers[1].controller.rotation 
-
-    }, [])
-    /* useXRFrame((time,xrframe)=>{
-            
-    })*/
     return (
         <>
+        <group ref={playerRef}>
             <OrbitControls></OrbitControls>
             <Hands />
+            
             <DefaultXRControllers />
+        </group>
         </>
     )
 }
